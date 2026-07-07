@@ -1,7 +1,7 @@
 import path from "node:path";
 import dotenv from "dotenv";
 
-dotenv.config();
+dotenv.config({ quiet: true });
 
 export interface BridgeConfig {
   host: string;
@@ -31,19 +31,33 @@ function intFromEnv(value: string | undefined, fallback: number): number {
   return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
 }
 
+function tokenFromEnv(dryRun: boolean): string {
+  const token = process.env.PM_BRIDGE_TOKEN?.trim() ?? "";
+  const isPlaceholder = token === "" || token === "change-me";
+
+  if (isPlaceholder && !dryRun) {
+    throw new Error("PM_BRIDGE_TOKEN must be set to a real non-placeholder value before starting the bridge. Set PROJECTUNITY_DRY_RUN=true only for dry-run startup.");
+  }
+
+  return isPlaceholder ? "dry-run-token" : token;
+}
+
+const dryRun = boolFromEnv(process.env.PROJECTUNITY_DRY_RUN, false);
+const repoPath = process.env.PROJECTUNITY_REPO ?? "H:\\ProjectUnity";
+
 export const config: BridgeConfig = {
   host: process.env.PM_BRIDGE_HOST ?? "127.0.0.1",
   port: intFromEnv(process.env.PM_BRIDGE_PORT, 4387),
-  token: process.env.PM_BRIDGE_TOKEN ?? "change-me",
+  token: tokenFromEnv(dryRun),
   requireTokenForRead: boolFromEnv(process.env.PM_BRIDGE_REQUIRE_TOKEN_FOR_READ, true),
-  repoPath: process.env.PROJECTUNITY_REPO ?? "H:\\ProjectUnity",
+  repoPath,
   logDir: process.env.PROJECTUNITY_LOG_DIR ?? "H:\\GameDev\\PMBridge\\logs",
   queueDir: process.env.PROJECTUNITY_QUEUE_DIR ?? "H:\\GameDev\\PMBridge\\queue",
   codexSandbox: process.env.PROJECTUNITY_CODEX_SANDBOX ?? "workspace-write",
   enableAutoAudit: boolFromEnv(process.env.PROJECTUNITY_ENABLE_AUTO_AUDIT, true),
   auditIntervalMinutes: intFromEnv(process.env.PROJECTUNITY_AUDIT_INTERVAL_MINUTES, 10),
-  dryRun: boolFromEnv(process.env.PROJECTUNITY_DRY_RUN, false),
-  reportsDir: path.join(process.env.PROJECTUNITY_REPO ?? "H:\\ProjectUnity", "reports", "pm-bridge")
+  dryRun,
+  reportsDir: path.join(repoPath, "reports", "pm-bridge")
 };
 
 export function publicConfig() {
@@ -58,6 +72,7 @@ export function publicConfig() {
     auditIntervalMinutes: config.auditIntervalMinutes,
     dryRun: config.dryRun,
     requireTokenForRead: config.requireTokenForRead,
-    tokenConfigured: config.token.length > 0 && config.token !== "change-me"
+    tokenConfigured: config.token.length > 0 && config.token !== "change-me" && config.token !== "dry-run-token",
+    dryRunTokenBypass: config.dryRun && config.token === "dry-run-token"
   };
 }

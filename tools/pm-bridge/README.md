@@ -27,18 +27,20 @@ This runs `npm install` and builds TypeScript.
 
 Copy `.env.example` to `.env` only on the local machine if you want persistent local settings. Do not commit `.env`.
 
-Set a strong token before using write/action endpoints:
+Set a strong token before startup. The bridge refuses to start when `PM_BRIDGE_TOKEN` is missing, empty, or equal to `change-me`, unless `PROJECTUNITY_DRY_RUN=true`.
 
 ```powershell
 [Environment]::SetEnvironmentVariable("PM_BRIDGE_TOKEN", "<set-a-long-random-token>", "Process")
 ```
+
+For startup at logon, store the token in a safe user environment variable or in a local uncommitted `tools/pm-bridge/.env` file. Do not commit real tokens.
 
 Supported environment variables:
 
 ```text
 PM_BRIDGE_HOST=127.0.0.1
 PM_BRIDGE_PORT=4387
-PM_BRIDGE_TOKEN=change-me
+PM_BRIDGE_TOKEN=<set-a-long-random-token>
 PM_BRIDGE_REQUIRE_TOKEN_FOR_READ=true
 PROJECTUNITY_REPO=H:\ProjectUnity
 PROJECTUNITY_LOG_DIR=H:\GameDev\PMBridge\logs
@@ -106,6 +108,8 @@ curl.exe -X POST http://127.0.0.1:4387/api/pm/task-file `
 ## Scheduled Start
 
 The scheduled task is not registered automatically.
+
+Before registering it, make sure `PM_BRIDGE_TOKEN` is available to the scheduled process through a safe user environment variable or a local uncommitted `.env` file. The task will fail fast if the token is missing.
 
 To register bridge startup at user logon, run manually:
 
