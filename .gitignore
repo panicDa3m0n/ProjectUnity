@@ -56,6 +56,14 @@ Desktop.ini
 .env.*
 !.env.example
 
+# Node and local bridge runtime state
+node_modules/
+tools/pm-bridge/dist/
+pm-next-task.md
+reports/pm-bridge/*.json
+reports/pm-bridge/history/
+!reports/pm-bridge/.gitkeep
+
 # Local credentials and signing material
 *.keystore
 *.jks
