@@ -27,5 +27,6 @@ Unity Hub may temporarily stage downloads under the user's Unity Hub application
 
 - Future Codex runs should treat `H:\ProjectUnity` as the repository workspace.
 - Future Unity project work should use `H:\ProjectUnity\unity\TheArchive`, not `H:\GameDev\UnityProjects\TheArchive`.
+- `H:\GameDev` may be included in the local IDE workspace for Codex visibility into editors, caches, probe projects, and build output, but it remains external local toolchain state rather than repository content.
 - Generated Unity folders such as `Library`, `Temp`, `Obj`, `Build`, `Builds`, `Logs`, and `UserSettings` must remain ignored by Git.
 - Toolchain installers that require temporary `C:` staging should be monitored and reported, not silently allowed to fill the system drive.

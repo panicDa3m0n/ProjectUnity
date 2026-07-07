@@ -38,3 +38,12 @@ Gameplay logic should remain separate from presentation. Session logic should no
 - Android modules status: blocked. Android Build Support installer left an incomplete `AndroidPlayer` directory without `SDK`, `NDK`, `OpenJDK`, or `UnityEditor.Android.Extensions.dll`; the incomplete directory was preserved as `H:\GameDev\UnityEditors\6000.5.2f1\Editor\Data\PlaybackEngines\AndroidPlayer.incomplete-20260707`.
 - Unity Package Manager status: blocked during project validation. Batch Editor launches stop at `project:resolve-packages`, so the Bootstrap scene generation method did not run.
 - Unity MCP status: not installed or not discoverable in the project/package metadata during Phase 1.
+
+## Phase 1D Toolchain Repair Attempt
+
+- Local workspace layout decision: keep the repository and Unity project in `H:\ProjectUnity`, and keep Unity Hub, Unity Editors, Android tooling, caches, temp files, probe projects, and builds in `H:\GameDev`.
+- IDE workspace note: `H:\GameDev` may be opened alongside `H:\ProjectUnity` for local inspection, but `H:\GameDev` is not repository content and must not be committed.
+- Hub-managed repair attempt: Unity Hub was able to list `6000.5.2f1`, but could not attach Android modules because that Editor lacks Hub metadata.
+- Fresh Hub install attempt: Unity Hub started installing Unity `6000.3.19f1` with Android modules under `H:\GameDev\UnityEditors`, but the elevated `UnitySetup64-6000.3.19f1` process stalled before Android modules were installed.
+- Android modules status after Phase 1D: still blocked. `SDK`, `NDK`, `OpenJDK`, and `UnityEditor.Android.Extensions.dll` were not present for `6000.3.19f1` when the stop condition was reached.
+- Probe project status: not attempted because the toolchain stop condition was reached before Android modules were available.
