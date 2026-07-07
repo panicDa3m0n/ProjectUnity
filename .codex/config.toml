@@ -1,0 +1,53 @@
+# Repository-local Codex policy for The Archive.
+# Paths are workspace-relative so this file can be shared without local-machine data.
+
+[workspace]
+name = "The Archive"
+root = "."
+unity_project = "unity/TheArchive"
+
+[permissions]
+profile = "workspace"
+description = "Allow normal work inside the repository while blocking generated caches, build outputs, credentials, and signing material."
+read = ["."]
+write = ["."]
+
+deny_paths = [
+  "**/.git/**",
+  "**/Library/**",
+  "**/Temp/**",
+  "**/Obj/**",
+  "**/Build/**",
+  "**/Builds/**",
+  "**/Logs/**",
+  "**/UserSettings/**",
+  "**/MemoryCaptures/**",
+  "**/*.keystore",
+  "**/*.jks",
+  "**/*.p12",
+  "**/*.pfx",
+  "**/*.pem",
+  "**/*.key",
+  "**/.env",
+  "**/.env.*"
+]
+
+[[secret_deny]]
+name = "generic_api_key_assignment"
+pattern = '''(?i)(api[_-]?key|secret|token|password|credential)\s*[:=]\s*['"]?[A-Za-z0-9_./+=-]{16,}'''
+action = "block"
+
+[[secret_deny]]
+name = "unity_credentials"
+pattern = '''(?i)(unity[_-]?(serial|username|password|license|token))\s*[:=]\s*['"]?.+'''
+action = "block"
+
+[[secret_deny]]
+name = "android_signing_material"
+pattern = '''(?i)(keystore|keyalias|storepass|keypass)\s*[:=]\s*['"]?.+'''
+action = "block"
+
+[[secret_deny]]
+name = "private_key_block"
+pattern = '''-----BEGIN (RSA |DSA |EC |OPENSSH |)PRIVATE KEY-----'''
+action = "block"

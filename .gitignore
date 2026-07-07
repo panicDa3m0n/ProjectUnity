@@ -1,0 +1,65 @@
+# Unity generated folders
+**/[Ll]ibrary/
+**/[Tt]emp/
+**/[Oo]bj/
+**/[Bb]uild/
+**/[Bb]uilds/
+**/[Ll]ogs/
+**/[Uu]ser[Ss]ettings/
+**/[Mm]emoryCaptures/
+**/[Rr]ecordings/
+
+# Unity generated files
+**/*.csproj
+**/*.sln
+**/*.suo
+**/*.tmp
+**/*.user
+**/*.userprefs
+**/*.pidb
+**/*.booproj
+**/*.svd
+**/*.pdb
+**/*.mdb
+**/*.opendb
+**/*.VC.db
+**/*.pidb.meta
+**/*.pdb.meta
+**/*.mdb.meta
+
+# Unity crash and build artifacts
+sysinfo.txt
+crashlytics-build.properties
+*.apk
+*.aab
+
+# Rider and Visual Studio
+.idea/
+.vs/
+*.DotSettings.user
+
+# Visual Studio Code local workspace files
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+
+# OS files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Logs and local env files
+*.log
+.env
+.env.*
+!.env.example
+
+# Local credentials and signing material
+*.keystore
+*.jks
+*.p12
+*.pfx
+*.pem
+*.key
